@@ -23,6 +23,15 @@ body {
     height: 50px;
 }
 
+#header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    color: var(--gray)
+}
+
 #footer > a {
     color: var(--primary-gray);
     text-decoration: none;

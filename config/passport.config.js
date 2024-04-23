@@ -12,7 +12,9 @@ async function initialize(passport){
         }));
     passport.serializeUser((user, done) => done(null, user.id))
     passport.deserializeUser(async (id, done) => {
-        done(null, await User.findById(id));
+        let user = await User.findById(id)
+        user.password = undefined
+        done(null, user);
     })
 }
 

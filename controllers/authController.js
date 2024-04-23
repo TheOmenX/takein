@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt")
 // @route   GET /login
 // @acces   Public
 const loginPage = (req, res) => {
+    console.log(req.params);
     res.render('./auth/login')
 }
 
@@ -14,12 +15,13 @@ const loginPage = (req, res) => {
 // @route   POST /login
 // @acces   Public
 const login = 
-    (passport.authenticate("local", {
-        successRedirect: '/',
-        failureRedirect: '/login',
-        failureFlash: true
-    }))
+    (passport.authenticate('local', { failureRedirect: '/login', failureFlash: true, keepSessionInfo: true }))
+    
+const loginRedirect = (req, res) => {
+        res.redirect(req.session.redirectTo || '/');
+}
 
+    
 
 // @desc    Render register page
 // @route   GET /register
@@ -58,4 +60,4 @@ const entryPage = (req, res) => {
 }
 
 
-module.exports = {loginPage, login, registerPage, register, entryPage}
+module.exports = {loginPage, login, loginRedirect, registerPage, register, entryPage};

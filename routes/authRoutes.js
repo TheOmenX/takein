@@ -5,16 +5,16 @@ ROUTE FOR PAGES(/):
     - Register Page (3):    /register
 */
 
-
+const passport = require("passport");
 const express = require('express')
 const router = express.Router()
 const { checkNotAuthenticated } = require('../middleware/authMiddleware')
-const { login, loginPage, register, registerPage, entryPage} = require('../controllers/authController')
+const { login, loginRedirect, loginPage, register, registerPage, entryPage} = require('../controllers/authController')
 
 router.get('/entry', entryPage)
 
 router.get('/login', checkNotAuthenticated, loginPage)
-router.post('/login', login)
+router.post('/login', login, loginRedirect);
 
 router.get('/register', checkNotAuthenticated, registerPage)
 router.post('/register', register)

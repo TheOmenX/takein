@@ -1,4 +1,13 @@
-const profilePage = (req, res) => {
+const Recipe = require("../models/recipe");
+
+const profilePage = async (req, res) => {
+    console.log(req.user)
+
+    for(recipeId of req.user.favouriteRecipes) {
+        recipe = await Recipe.findById(recipeId);
+        console.log(recipe)
+    }
+
     res.render('./profile/profile', { nav: "profile"})
 }
 
