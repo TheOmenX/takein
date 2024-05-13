@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 
 const productSchema = new mongoose.Schema({
     name: {type: String, required: true},
-    link: {type: String, required: true},
+    link: {type: String, required: false},
 }, { versionKey: false, _id: false })
 
 

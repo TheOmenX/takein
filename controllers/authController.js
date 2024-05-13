@@ -35,7 +35,6 @@ const registerPage = (req, res) => {
 // @route   POST /register
 // @acces   Public
 const register = async (req, res) => {
-    console.log("registering")
     User.create({
       email: req.body.email,
       username: req.body.username,
@@ -46,7 +45,6 @@ const register = async (req, res) => {
         console.log("Succesfull");
         res.redirect("/login")
     }).catch(err => {
-        console.log(err)
         req.flash('error', 'An user with that email already exits.')
         res.redirect("/register")
     })
