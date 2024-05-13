@@ -3,7 +3,7 @@ function checkAuthenticated(req, res, next) {
         return next()
     }
     req.session.redirectTo = req.originalUrl;
-    res.redirect('/login')
+    res.redirect('/entry')
 }
 
 function checkNotAuthenticated(req, res, next) {
