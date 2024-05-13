@@ -9,7 +9,7 @@ ROUTE FOR PAGES(/friends):
 const express = require('express')
 const router = express.Router()
 const { checkAuthenticated } = require('../middleware/authMiddleware')
-const { friendsPage } = require('../controllers/friendsController')
+const { friendsPage, friendPage, chatsPage, chatPage } = require('../controllers/friendsController')
 
 router.get('/', checkAuthenticated, friendsPage)
 

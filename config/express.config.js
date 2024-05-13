@@ -13,6 +13,7 @@ app.use(bodyParser.json());
 app.use(express.static('../views'));
 app.use('/css', express.static(path.resolve(__dirname, "../views/css")));
 app.use('/scripts', express.static(path.resolve(__dirname, "../views/scripts")));
+app.use('/images', express.static(path.resolve(__dirname, "../views/images")));
 app.use(flash());
 app.use(session({
     secret: process.env.SESSION_SECRET,

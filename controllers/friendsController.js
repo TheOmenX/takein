@@ -1,11 +1,20 @@
-const recipePage = (req, res) => {
-    res.render('./recipe/recipe')
+const friendsPage = (req, res) => {
+    res.render('./friends/friends')
 }
 
-const review = (req, res) => {
-    res.status(200).send("Succes")
+const friendPage = (req, res) => {
+    res.render('./friends/friend')
+}
+
+const chatsPage = (req, res) => {
+    res.render('./friends/chats')
+}
+
+const chatPage = (req, res) => {
+    res.render('./friends/chat')
 }
 
 
 
-module.exports = {  }
+
+module.exports = { friendsPage, friendPage, chatsPage, chatPage }
