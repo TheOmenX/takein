@@ -4,7 +4,3 @@
     --secondary: #3D4F36;
     --gray: #3F4649;
 }
-
-*{
-    background-color: var(--primary);
-}
