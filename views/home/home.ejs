@@ -13,7 +13,18 @@
     <div id="content">
         <%- include('../templates/header'); %>
         <div id="main">    
-            <img src="/images/image.png" alt="">
+            <h1>Welcome back</h1>
+
+            <div id="day-recipe">
+
+            </div>
+
+            <% test.forEach(function(data) { %>
+                <%- include('../templates/recipe', {data}); %>
+            <% }); %>
+
+
+            <div></div>
 
         </div>
         <%- include('../templates/footer'); %>
