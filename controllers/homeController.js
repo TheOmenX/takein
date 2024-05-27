@@ -3,15 +3,15 @@ const homePage = (req, res) => {
 }
 
 const cartPage = (req, res) => {
-    res.render('./home/cart')
+    res.render('./home/cart', {nav: ""})
 }
 
 const searchPage = (req, res) => {
-    res.render('./home/search')
+    res.render('./home/search', {nav: "search"})
 }
 
 const findPage = (req, res) => {
-    res.render('./home/find')
+    res.render('./home/find', {nav: "location"})
 }
 
 
