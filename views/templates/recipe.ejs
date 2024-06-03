@@ -1,6 +1,27 @@
-<div>
-    <img id="photo" src="images/placeholder.png" alt="">
-    <div id="recipeData">
-        <%- data.name -%>
+<div class="recipe-container" id="<%- data.id %>">
+    <img class="recipe-photo" src=<% if (data.image) {%> 
+            "data:image/jpeg;base64,<%- data.image.toString("base64") -%>"
+        <%} else {%>
+            "images/placeholder.png"
+        <% } %>
+        alt="">
+    <div class="recipe-data">
+        <p><b><%- data.title -%></b></p>
+        <p>
+            <% for(var i=0; i<5; i++) {%>
+                <% if(i < data.rating){ %>
+                    ★
+                <% } else {%>
+                    ☆
+                <% } %>
+            <% } %>
+            (<%- data.no_ratings -%>)
+        </p>
+        <p> Nutri-Score: <%- data.nutriscore -%>/5</p>
+        <p><%- data.description -%></p>
     </div>
+    <% if(removable){ %>
+        <i class="fa-solid fa-xmark fa-lg" style="margin:10px;"></i>
+    <% } %>
 </div>
+

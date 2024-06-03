@@ -11,7 +11,6 @@ const router = express.Router()
 //const {  } = require('../middleware/authMiddleware')
 const { homePage, cartPage, searchPage, findPage } = require('../controllers/homeController')
 
-
 router.get('/', homePage)
 
 router.get('/cart', cartPage)

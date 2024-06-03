@@ -17,7 +17,9 @@ const recipeSchema = new mongoose.Schema({
     steps: {type: [String], required: true, 
         validate: [(val) => val.length > 0, 'Steps cannot be empty.']
     },
-    verified: {type: Boolean}
+    image: {},
+    owner: {type: [mongoose.Types.ObjectId], ref: "User", required: true},
+    verified: {type:Boolean},
 
 
 }, { versionKey: false})

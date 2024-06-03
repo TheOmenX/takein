@@ -1,5 +1,9 @@
-const homePage = (req, res) => {
-    res.render('./home/home', {nav: "home", test: [{name: "Lasanga", desc: "stack", rating: 5, no_rating: 582, nutriscore: 4}]})
+const Recipe = require("../models/recipe");
+const fs = require("fs")
+
+const homePage = async (req, res) => {  
+    var data = await Recipe.find({});
+    res.render('./home/home', {nav: "home", test: data})
 }
 
 const cartPage = (req, res) => {

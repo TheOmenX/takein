@@ -10,9 +10,9 @@ const userSchema = new mongoose.Schema({
     lastName: {type: String, required: true},
 
     description: {type: String, required: false},                       
-    adress: {type: String, required: false},                                    // ADRESS AS STRING
-    recipes: {type: [mongoose.Types.ObjectId], ref: "Recipe", required: false},                // ID'S OF CREATED RECIPES
+    adress: {type: String, required: false},                                    // ADRESS AS STRING             // ID'S OF CREATED RECIPES
     favouriteRecipes: {type: [mongoose.Types.ObjectId], ref: "Recipe", required: true},        // ID'S OF FAVOURITE RECIPES
+    picture: {}
 }, { versionKey: false })
 
 module.exports = mongoose.model("user", userSchema)

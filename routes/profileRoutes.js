@@ -8,12 +8,12 @@ ROUTE FOR PAGES(/profile/):
 const express = require('express')
 const router = express.Router()
 const { checkAuthenticated } = require('../middleware/authMiddleware')
-const { profilePage, favouritesPage, settingsPage, settings } = require('../controllers/profileController')
+const { profilePage, favourites, settingsPage, settings } = require('../controllers/profileController')
 
-router.get('/', checkAuthenticated, profilePage)
+router.get('/', profilePage)
 
-router.get('/favourites', checkAuthenticated, favouritesPage)
-router.delete('/favourites', checkAuthenticated, favouritesPage)
+router.get('/favourites', favourites)
+router.delete('/favourites', favourites)
 
 router.get('/settings', checkAuthenticated, settingsPage)
 router.post('/settings', checkAuthenticated, settings)

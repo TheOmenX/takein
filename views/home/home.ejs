@@ -8,11 +8,12 @@
     <link rel="stylesheet" type="text/css" href="/css/global.css">
     <script src="https://kit.fontawesome.com/8f5ac29544.js" crossorigin="anonymous"></script>
     <script src="../scripts/header.js" defer></script>
+    <script src="../scripts/home.js" defer></script>
 </head>
 <body>
     <div id="content">
         <%- include('../templates/header'); %>
-        <div id="main">    
+        <div id="main"> 
             <h1>Welcome back</h1>
 
             <div id="day-recipe">
@@ -20,7 +21,7 @@
             </div>
 
             <% test.forEach(function(data) { %>
-                <%- include('../templates/recipe', {data}); %>
+                <%- include('../templates/recipe', {data, removable: true}); %>
             <% }); %>
 
 

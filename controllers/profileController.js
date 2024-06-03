@@ -1,17 +1,29 @@
 const Recipe = require("../models/recipe");
+const User = require("../models/user")
 
 const profilePage = async (req, res) => {
-    console.log(req.user)
+    if(!req.query.id && !req.session?.passport?.user?._id) res.redirect("/entry")
+    else {
+        try {
+            let id = req.query.id ? req.query.id : req.session.passport.user._id
+            let isOwner = (req.query.id == req.session?.passport?.user?._id);
+            let user = await User.findById(id)
 
-    for(recipeId of req.user.favouriteRecipes) {
-        recipe = await Recipe.findById(recipeId);
-        console.log(recipe)
+            let favouriteRecipes = [];
+            for(recipe of user.favouriteRecipes){
+                favouriteRecipes.push(await Recipe.findById(recipe));
+            }
+            let leftovers = [];
+
+            res.render('./profile/profile', {user, isOwner, favouriteRecipes, leftovers})
+        } catch (error) {
+            res.status(401).send("An error occured.")
+            console.log(error)
+        }
     }
-
-    res.render('./profile/profile', { nav: "profile"})
 }
 
-const favouritesPage = (req, res) => {
+const favourites = (req, res) => {
     res.render('./profile/favourites')
 }
 
@@ -25,4 +37,4 @@ const settings = (req, res) => {
 
 
 
-module.exports = { profilePage, favouritesPage, settingsPage, settings }
+module.exports = { profilePage, favourites, settingsPage, settings }

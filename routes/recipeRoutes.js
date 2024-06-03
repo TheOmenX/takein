@@ -10,16 +10,18 @@ ROUTE FOR PAGES (/recipe/):
 const express = require('express')
 const router = express.Router()
 const { checkAuthenticated } = require('../middleware/authMiddleware')
-const { recipePage, reviewPage, review, reviewsPage, submitPage, submit } = require('../controllers/recipeController')
+const { recipe, recipePage, reviewPage, review, reviewsPage, submitPage, submit } = require('../controllers/recipeController')
 
 router.get('/', recipePage)
 
+router.post('/recipe', recipe)
+
 router.get('/review', reviewPage)
-router.post('/review', checkAuthenticated, review)
+router.post('/review', review)
 
 router.get('/reviews', reviewsPage)
 
-router.get('/submit', checkAuthenticated, submitPage)
-router.post('/submit', checkAuthenticated, submit)
+router.get('/submit', submitPage)
+router.post('/submit', submit)
 
 module.exports = router

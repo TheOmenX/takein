@@ -10,8 +10,16 @@ async function initialize(passport){
             if (!await bcrypt.compare(password, user.password)) return done(null, false, {message: "Incorrect password"})
             return done(null, user);
         }));
-    passport.serializeUser((user, done) => done(null, user.id))
-    passport.deserializeUser(async (id, done) => {
+    
+    passport.serializeUser((user, done) => {
+        let newUser = {
+            _id: user.id,
+            permissions: user.permissions
+        }
+        done(null, newUser)
+})
+    passport.deserializeUser(async (data, done) => {
+        let id = data._id;
         let user = await User.findById(id)
         user.password = undefined
         done(null, user);
