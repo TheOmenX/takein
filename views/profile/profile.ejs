@@ -8,9 +8,6 @@
     <link rel="stylesheet" type="text/css" href="/css/global.css">
     <script src="https://kit.fontawesome.com/8f5ac29544.js" crossorigin="anonymous"></script>
     <script src="/scripts/profile.js" defer></script>
-    <script> 
-        let favourites = <%-JSON.stringify(user.favouriteRecipes)%>
-    </script>
 </head>
 <body>
     <div id="content">
@@ -35,7 +32,7 @@
                 </div>
                 <div id="description">
                     <% if(user.description) { %>
-                        About me: <br>
+                        <p class="aboutme">About me:</p>
                         <%- user.description %>
                     <%}else {%>
                         This user has no description about themselves.
@@ -45,7 +42,7 @@
 
                 <button id="friendslist" class="button-primary">Friends List</button>
                 <% if(isOwner) {%>
-                    <button id="edit" class="button-primary">Edit</button>
+                    <button id="settings" class="button-primary">Edit</button>
                 <%}%>
             </div>
             
@@ -68,13 +65,22 @@
                 <div id="viewFavourites">View all</div>
             </div>
         </div>
-        <div id="overlay">
-            <div id="container">
-                <h1>Favourite recipes</h1>
+        <div id="overlay-favourites" class="overlay">
+            <div class="container">
+                <h1 class="overlay-title">Favourite recipes</h1>
                 <div class="favourites-container">
                     <% favouriteRecipes.forEach(function(data) { %>
                         <%- include('../templates/recipe', {data, removable: isOwner}); %>
                     <% }); %>
+                </div>
+            </div>
+        </div>
+
+        <div id="overlay-friends" class="overlay">
+            <div class="container">
+                <h1 class="overlay-title">Friends</h1>
+                <div class="friends-container">
+
                 </div>
             </div>
         </div>

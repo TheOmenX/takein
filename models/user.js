@@ -9,9 +9,10 @@ const userSchema = new mongoose.Schema({
     firstName: {type: String, required: true},
     lastName: {type: String, required: true},
 
-    description: {type: String, required: false},                       
-    adress: {type: String, required: false},                                    // ADRESS AS STRING             // ID'S OF CREATED RECIPES
+    description: {type: String, required: true},                       
+    adress: {type: String, required: true},                                    // ADRESS AS STRING             // ID'S OF CREATED RECIPES
     favouriteRecipes: {type: [mongoose.Types.ObjectId], ref: "Recipe", required: true},        // ID'S OF FAVOURITE RECIPES
+    friends: {type: [mongoose.Types.ObjectId], ref: "User", required: true},
     picture: {}
 }, { versionKey: false })
 

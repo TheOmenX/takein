@@ -50,8 +50,9 @@ document.getElementById("submit-review").addEventListener("click", async () => {
         body: JSON.stringify({recipeID, rating, description})
     })
 
+    console.log(response.ok)
     if(response.ok){
-        description.value = ""
+        window.reload()
         
     }else{
         displayError(response.statusText);

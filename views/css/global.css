@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300..900&display=swap');
+
 :root {
     --background: #F1EAE4;
     --primary: #A9C1A0;
@@ -7,14 +9,18 @@
     --primary-gray: #899e82;
 }
 
+
+
 body {
     margin: 0;
+    font-family: "Rubik", sans-serif;
 }
 
 #content {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    background: var(--background);
 }
 
 .error-message{
@@ -97,7 +103,7 @@ body {
 
 .button-primary {
     background-color: var(--secondary);
-    color: var(--light-gray);
+    color: var(--background);
     border: none;
     border-radius: 5px;
     padding: 6px 10px;

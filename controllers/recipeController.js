@@ -28,7 +28,7 @@ const recipePage = async (req, res) => {
     if(user) {
         let userID = user._id
         userReview = await Review.findOne({userID, recipeID: id})
-        if(data.owner = user._id || user.permissions.contains("ADMIN")){
+        if(data.owner == user._id || user.permissions.includes("ADMIN")){
             canEdit = true;
         }
     }
@@ -40,7 +40,7 @@ const recipePage = async (req, res) => {
     data.rating = (await Review.aggregate([
         { $match: {recipeID}},
         { $group: {_id:"$recipeID", average: {$avg: '$rating'}}}
-    ]))[0].average
+    ]))[0]?.average
     res.render('./recipe/recipe', {data, userReview, canEdit})
 }
 

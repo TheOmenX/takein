@@ -14,7 +14,7 @@
     <div id="content">
         <%- include('../templates/header'); %>
         <div id="main">
-            <form id="recipe-form" action="/recipe/submit?id=662274344212c5c795e23f86" method="post" enctype="multipart/form-data">
+            <form id="recipe-form" action="/recipe/submit" method="post" enctype="multipart/form-data">
                 <input type="text" name="id" value="<%- data.id %>" hidden>
                 <div>
                     <input type="file" name="photo" accept="image/*" id="photo-upload" class="inputfile">

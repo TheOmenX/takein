@@ -10,6 +10,9 @@
     grid-column-start: 1;
     grid-column-end: 2;
     width: 75%;   
+    object-fit: cover;
+    border: 3px solid var(--secondary);
+    border-radius: 10px;
 }
 
 #name {
@@ -52,7 +55,7 @@
     text-decoration: underline;
 }
 
-#overlay {
+.overlay {
     height: 100%;
     width: 100%;
     position: absolute;
@@ -66,12 +69,12 @@
 
 }
 
-#overlay.active {
+.overlay.active {
     opacity: 1 !important;
     z-index: 1;
 }
 
-#container {
+.container {
     background-color: var(--primary);
     border-radius: 10px;
     width: 80%;
@@ -88,4 +91,25 @@
 #favourites-container {
     overflow: scroll;
     width: 100%;
+}
+
+.overlay-title{
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid var(--background);
+    color: var(--background);
+}
+
+.favourites-container > .recipe-container {
+    color: var(--background);
+}
+
+#settings {
+    grid-row-start: 4;
+}
+
+.aboutme{
+    font-size: small;
+    color: var(--gray);
+    margin: 0;
 }

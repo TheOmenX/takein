@@ -6,7 +6,7 @@ const profilePage = async (req, res) => {
     else {
         try {
             let id = req.query.id ? req.query.id : req.session.passport.user._id
-            let isOwner = (req.query.id == req.session?.passport?.user?._id);
+            let isOwner = (req.query.id == req.session?.passport?.user?._id || !req.query.id)
             let user = await User.findById(id)
 
             let favouriteRecipes = [];
@@ -27,12 +27,28 @@ const favourites = (req, res) => {
     res.render('./profile/favourites')
 }
 
-const settingsPage = (req, res) => {
-    res.render('./profile/settings')
+const settingsPage = async (req, res) => {
+    let user = await User.findById(req.session.passport.user._id, {password: 0, favouriteRecipes: 0, friends: 0})
+    res.render('./profile/settings', {user})
 }
 
-const settings = (req, res) => {
-    res.status(200).send("Succes")
+const settings = async (req, res) => {
+
+    let data = req.body;
+    let id = data.id
+    delete data.id;
+    if(req.files){
+        data["picture"] = req.files.photo.data;
+    }
+    try {
+        console.log(data)
+        let result = await User.findByIdAndUpdate(id, data);
+        console.log(result)
+        res.redirect("/profile")
+    } catch{
+        res.status(500).send("An error occured")
+    }
+
 }
 
 

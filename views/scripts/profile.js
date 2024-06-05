@@ -7,29 +7,31 @@ for (let item of document.getElementsByClassName("recipe-container")){
     })
 };
 
+let overlayFavourites = document.getElementById("overlay-favourites")
+let overlayFriends = document.getElementById("overlay-friends")
+
+
 
 document.getElementById("viewFavourites")?.addEventListener("click", (e) => {
-    document.getElementById("overlay").classList.toggle("active")
+    overlayFavourites.classList.toggle("active")
 })
-
-document.getElementById("overlay").addEventListener("click", (el) => {
-    if(el.target.id == "overlay"){
-        document.getElementById("overlay").classList.toggle("active")
+overlayFavourites.addEventListener("click", (el) => {
+    if(el.target == overlayFavourites){
+        overlayFavourites.classList.toggle("active")
     }
 })
 
 
+document.getElementById("friendslist")?.addEventListener("click", (e) => {
+    overlayFriends.classList.toggle("active")
+})
+overlayFriends.addEventListener("click", (el) => {
+    if(el.target == overlayFriends){
+        overlayFriends.classList.toggle("active")
+    }
+})
 
 
-async function getRecipes(ids) {
-    result = await fetch("./recipe/recipe", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        body: JSON.stringify({ids: favourites}),
-    })
-    console.log(await result.json())
-    return result.json();
-}
+document.getElementById("settings").addEventListener("click", ()=>{
+    window .location = "./profile/settings"
+})
