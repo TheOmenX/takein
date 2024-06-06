@@ -14,7 +14,8 @@ async function initialize(passport){
     passport.serializeUser((user, done) => {
         let newUser = {
             _id: user.id,
-            permissions: user.permissions
+            permissions: user.permissions,
+            favouriteRecipes: user.favouriteRecipes
         }
         done(null, newUser)
 })

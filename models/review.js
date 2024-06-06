@@ -5,6 +5,7 @@ const recipeSchema = new mongoose.Schema({
     recipeID: {type: mongoose.Types.ObjectId, ref: "Recipe", required: true},
     rating: {type: Number, min: 1, max: 5, required: true},
     description: {type: String}
-}, { versionKey: false})
+
+}, { _id: false, versionKey: false, timestamps: { createdAt: true, updatedAt: false }})
 
 module.exports = mongoose.model("review", recipeSchema)

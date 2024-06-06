@@ -16,21 +16,29 @@
         <div id="main">
             <form id="recipe-form" action="/recipe/submit" method="post" enctype="multipart/form-data">
                 <input type="text" name="id" value="<%- data.id %>" hidden>
-                <div>
+                <div class="head">
                     <input type="file" name="photo" accept="image/*" id="photo-upload" class="inputfile">
                     <label for="photo-upload">
                         <img class="photo" id="photo-preview" src=<% if (data.image) {%> 
                                 "data:image/jpeg;base64,<%- data.image.toString("base64") -%>"
                             <%} else {%>
-                                "images/placeholder.png"
+                                "/images/placeholder.png"
                             <% } %>
                                 alt="">
                     </label>
-                    <input type="text" name="title" value="<%- data.title -%>">
+                    <div class="input-container">
+                        <div class="input-label">Title</div>
+                        <div id="title-edit" contenteditable="true"><%- data.title -%></div>
+                    </div>
+                    <input type="text" name="title" id="title" hidden>
                 </div>
-                <textarea type="text" id="description" rows="5" name="description"> <%- data.description -%></textarea>
+                <div class="input-container description">
+                    <div class="input-label">Description</div>
+                    <textarea type="text" id="description" rows="5" name="description" placeholder="Add a description"><%- data.description -%></textarea>
+                </div>
 
-                <div id="ingredients"> 
+                <div id="ingredients" class="input-container"> 
+                    <div class="input-label">Ingredients</div>
                     <% for (i = 1; i < data.ingredients.length+1; i++) { %>
                         <div id="ingredient-<%-i-%>">
                             <input type="text" name="name-<%-i-%>" value="<%- data.ingredients[i-1].name -%>">
@@ -44,14 +52,16 @@
                     </div>
 
                 </div>
-                <div id="steps"> 
-                    <% for (i = 1; i < data.steps.length+1; i++) { %>
-                        <input type="text" name="step-<%-i-%>" value="<%- data.steps[i-1] -%>">
-                    <% } %>
-
-                    <input type="text" name="step-<%-data.steps.length+1-%>" placeholder="New step">
+                <div class="steps input-container"> 
+                    <div class="input-label">Steps</div>
+                    <div id="steps">
+                        <% for (i = 1; i < data.steps.length+1; i++) { %>
+                            <input type="text" name="step-<%-i-%>" value="<%- data.steps[i-1] -%>">
+                        <% } %>
+                        <input type="text" name="step-<%-data.steps.length+1-%>" placeholder="New step">
+                    </div>
                 </div>
-                <input type="submit" value="save">
+                <input type="submit" class="button-primary" value="Save">
             </form>  
         </div>
         <%- include('../templates/footer', {nav: ""}); %>

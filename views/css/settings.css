@@ -67,13 +67,16 @@ form {
     top: -7px;
     left: 5px;
     padding: 1px 5px;
-    background-color: white;
+    background-color: var(--background);
     font-size: small;
 }
 
 .input-container > input {
-    padding: 6px 10px;
+    padding: 10px 10px 6px 10px;
     font-size: medium;
+    background: var(--background);
+    border: 1px solid var(--gray);
+    border-radius: 5px;
 }
 
 

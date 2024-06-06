@@ -49,10 +49,8 @@ document.getElementById("submit-review").addEventListener("click", async () => {
           },
         body: JSON.stringify({recipeID, rating, description})
     })
-
-    console.log(response.ok)
     if(response.ok){
-        window.reload()
+        window.location.reload();
         
     }else{
         displayError(response.statusText);
@@ -62,5 +60,28 @@ document.getElementById("submit-review").addEventListener("click", async () => {
 document.getElementById("write-review").addEventListener("click", (el) => {
     if(el.target.id == "write-review"){
         document.getElementById("write-review").classList.toggle("active")
+    }
+})
+
+document.getElementById("star-recipe").addEventListener("click",async  (el) => {
+    let star = el.target
+    if(!star.classList.contains("fa-star")) return;
+    let liked = star.classList.contains("checked")
+    let method = liked ? "DELETE" : "POST" 
+
+    star.classList.remove("fa-star")
+    star.classList.add("fa-spinner")
+    let response = await fetch("/profile/favourite", {
+        method: method,
+        headers: {"Content-Type": "application/json",},
+        body: JSON.stringify({recipeID})
+    })
+
+    if(response.ok){
+        star.classList.toggle("checked")
+        star.classList.add("fa-star")
+        star.classList.remove("fa-spinner")
+    }else {
+        displayError("An error occured")
     }
 })

@@ -2,7 +2,7 @@
     display: grid;
     padding: 20px;
     grid-template-columns: 33% 33% 33%;
-    grid-template-rows: 8vw 16vw auto 8vw;
+    grid-template-rows: 8vw 16vw auto 9vw;
 }
 
 #profile-picture{

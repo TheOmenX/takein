@@ -13,7 +13,13 @@
 <body>
     <div id="content">
         <%- include('../templates/header'); %>
-        <div id="main">    
+        <div id="main">
+            <% if (favourite > 1) { %>
+                <i class="fa-solid fa-star fa-xl checked" id="star-recipe"></i>  
+            <% } else if (favourite > 0) { %>
+                <i class="fa-solid fa-star fa-xl" id="star-recipe"></i>  
+            <% } %>
+
             <img class="photo" id="photo" src=<% if (data.image) {%> 
                 "data:image/jpeg;base64,<%- data.image.toString("base64") -%>"
             <%} else {%>

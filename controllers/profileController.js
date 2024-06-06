@@ -1,5 +1,6 @@
 const Recipe = require("../models/recipe");
 const User = require("../models/user")
+const mongoose = require("mongoose")
 
 const profilePage = async (req, res) => {
     if(!req.query.id && !req.session?.passport?.user?._id) res.redirect("/entry")
@@ -11,10 +12,10 @@ const profilePage = async (req, res) => {
 
             let favouriteRecipes = [];
             for(recipe of user.favouriteRecipes){
-                favouriteRecipes.push(await Recipe.findById(recipe));
+                let data =await Recipe.findById(recipe)
+                if (data) favouriteRecipes.push(data)
             }
             let leftovers = [];
-
             res.render('./profile/profile', {user, isOwner, favouriteRecipes, leftovers})
         } catch (error) {
             res.status(401).send("An error occured.")
@@ -23,8 +24,41 @@ const profilePage = async (req, res) => {
     }
 }
 
-const favourites = (req, res) => {
-    res.render('./profile/favourites')
+const addFavourites = async (req, res) => {
+    let user = req.session.passport.user
+    let favouriteRecipes = user.favouriteRecipes
+    if(!favouriteRecipes.includes(req.body.recipeID)) favouriteRecipes.push(req.body.recipeID)
+    
+    try {
+        await User.findByIdAndUpdate(user._id, {
+            favouriteRecipes : favouriteRecipes
+        })
+        req.session.passport.user.favouriteRecipes = favouriteRecipes
+        req.session.save(function(err) {console.log(err);})
+    
+        res.status(200).send("succes")
+    } catch (error) {
+        res.status(501).statusText("An internal error occured.")
+    }
+}
+
+const delFavourites = async (req, res) => {
+    let user = req.session.passport.user
+    let favouriteRecipes = user.favouriteRecipes
+    let index = favouriteRecipes.indexOf(req.body.recipeID)
+    if(index >= 0) favouriteRecipes.splice(index, 1)
+    
+    try {
+        await User.findByIdAndUpdate(user._id, {
+            favouriteRecipes : favouriteRecipes
+        })
+        req.session.passport.user.favouriteRecipes = favouriteRecipes
+        req.session.save(function(err) {console.log(err);})
+        res.status(200).send("succes")
+    } catch (error) {
+        res.statusText("An internal error occured.")
+        res.status(501)
+    }
 }
 
 const settingsPage = async (req, res) => {
@@ -41,9 +75,7 @@ const settings = async (req, res) => {
         data["picture"] = req.files.photo.data;
     }
     try {
-        console.log(data)
         let result = await User.findByIdAndUpdate(id, data);
-        console.log(result)
         res.redirect("/profile")
     } catch{
         res.status(500).send("An error occured")
@@ -51,6 +83,18 @@ const settings = async (req, res) => {
 
 }
 
+const checkUser = async (req,res) => {
+    let username = req.body.username
 
+    let user = await User.findOne({username})
+    
+    if(user) {
+        res.status(200).send({id: user._id});
+    }else{
+        res.statusText = "User not found"
+        res.status(400).send()
+    }
 
-module.exports = { profilePage, favourites, settingsPage, settings }
+}
+    
+module.exports = { profilePage, addFavourites, delFavourites, settingsPage, settings, checkUser }

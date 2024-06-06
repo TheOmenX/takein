@@ -70,6 +70,6 @@ document.getElementById("photo-upload").addEventListener("change", (e) => {
 })
 
 
-document.getElementById("recipe-form").addEventListener('submit', (event) => {
-    //event.preventDefault();
+document.getElementById("title-edit").addEventListener('keydown', (event) => {
+    document.getElementById("title").value = event.target.innerHTML;
 })

@@ -25,15 +25,19 @@ const recipePage = async (req, res) => {
     let user = req.session?.passport?.user
     let userReview;
     let canEdit = false;
+    let favourite = 0;
     if(user) {
         let userID = user._id
         userReview = await Review.findOne({userID, recipeID: id})
         if(data.owner == user._id || user.permissions.includes("ADMIN")){
             canEdit = true;
         }
+        favourite = 1;
+        console.log(user.favouriteRecipes.includes(id))
+        if(user.favouriteRecipes.includes(id)) favourite = 2;
     }
 
-
+    
 
     data.no_ratings = await Review.countDocuments({recipeID: id})
     let recipeID = new mongoose.Types.ObjectId(id)
@@ -41,7 +45,7 @@ const recipePage = async (req, res) => {
         { $match: {recipeID}},
         { $group: {_id:"$recipeID", average: {$avg: '$rating'}}}
     ]))[0]?.average
-    res.render('./recipe/recipe', {data, userReview, canEdit})
+    res.render('./recipe/recipe', {data, userReview, canEdit, favourite})
 }
 
 const reviewPage = (req, res) => {
@@ -51,13 +55,17 @@ const reviewPage = (req, res) => {
 
 const review = (req, res) => {
     let data = req.body;
+    let recipeID = req.body.recipeID
     try {
         if(!req.session?.passport?.user) {
             res.statusMessage ='User not logged in'
             res.status(403).send()
         }
         data["userID"] = req.session.passport.user
-        Review.create(data)
+        let query = {recipeID: recipeID, userID: data.userID}
+        console.log(query)
+
+        Review.findOneAndReplace({recipeID: recipeID, userID: data.userID}, data, {upsert:true})
             .then(() => {
                 console.log("succes")
                 res.status(200).send("Succes")
@@ -77,11 +85,15 @@ const reviewsPage = (req, res) => {
 
 const submitPage = async (req, res) => {
     let id = req.query.id
-    let data = await Recipe.findById(id)
-    if(!id || !data) res.redirect("/");
-
-
-    res.render('./recipe/submit', {data})
+    if(id == "new"){
+        res.render('./recipe/submit', {data: {id: "new", title: "Your new recipe", ingredients: [], steps: []}})
+    }else if(mongoose.Types.ObjectId.isValid(id)){
+        let data = await Recipe.findById(id).catch((err) => console.log(err))
+        if(!data) res.redirect("/");
+        res.render('./recipe/submit', {data})
+    }else {
+        res.redirect("/");
+    }
 }
 
 const submit = async (req, res) => {
@@ -109,12 +121,85 @@ const submit = async (req, res) => {
         data["image"] = req.files.photo.data;
     }
 
-    console.log(data);
-    await Recipe.findByIdAndUpdate(req.body.id, data);
+    if(req.body.id == "new"){
+        let result = await Recipe.create(data)
+        data.owner = req.session.passport.user._id;
+        res.status(200).redirect(`/recipe?id=${result._id}`)
+    }else if( mongoose.Types.ObjectId.isValid(req.body.id)){
+        await Recipe.findByIdAndUpdate(req.body.id, data);
+        res.status(200).redirect(`/recipe?id=${req.body.id}`)
+    }else {
+        res.status(400).redirect(`/recipe?id=${req.body.id}`)
+    }
 
-
-    res.status(200).redirect(`/recipe?id=${req.body.id}`)
 }
 
+const randomRecipe = async (req, res) => {
+    let count = await Recipe.countDocuments();
+    var random = Math.floor(Math.random() * count)
+    let recipe = await Recipe.findOne().skip(random)
+    let data = recipe.toObject()
+    let recipeID = recipe._id
 
-module.exports = { recipe, recipePage, reviewPage, review, reviewsPage, submitPage, submit }
+    data.no_ratings = await Review.countDocuments({recipeID: recipeID})
+    data.rating = (await Review.aggregate([
+        { $match: {recipeID}},
+        { $group: {_id:"$recipeID", average: {$avg: '$rating'}}}
+    ]))[0]?.average
+
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(data));
+}
+
+const getRecipes = async (req, res) => {
+    let { value, filter, sort }  = req.body;
+    let regex = "^.*"
+
+    value.trim().split(" ").forEach(w => {
+        regex += `(?=.*\\b${w}\\b)`
+    })
+
+    regex += ".*$"
+
+    let data = await Recipe.aggregate([
+        
+        {$match :{title: { $regex: regex, $options: "i" }}},
+        {
+            $lookup: {
+                from: Review.collection.name,
+                localField: "_id",
+                foreignField: "recipeID",
+                as: "ratings",
+                pipeline: [
+                    {
+                        "$project": {
+                          "_id": 0,
+                          "rating": 1
+                        }
+                    }
+                ]
+            }
+        },
+        { 
+            "$set": {
+              "rating": { "$avg": "$ratings.rating" },
+              "no_ratings": {"$size": "$ratings"}
+            }
+        },
+        { 
+            "$unset": "ratings"
+        }
+    ])
+    
+    
+    //await Recipe.find({title: { $regex: regex, $options: "i" }})        .limit(7)
+
+    data.forEach(x => {console.log(x.ratings); console.log(x.avgRating)})
+    console.log(data)
+
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(data));
+
+}
+
+module.exports = { recipe, recipePage, reviewPage, review, reviewsPage, submitPage, submit, randomRecipe, getRecipes }

@@ -20,8 +20,6 @@ const recipeSchema = new mongoose.Schema({
     image: {},
     owner: {type: [mongoose.Types.ObjectId], ref: "User", required: true},
     verified: {type:Boolean},
-
-
-}, { versionKey: false})
+}, { versionKey: false, timestamps: { createdAt: true, updatedAt: false }})
 
 module.exports = mongoose.model("recipe", recipeSchema)

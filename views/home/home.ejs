@@ -14,18 +14,35 @@
     <div id="content">
         <%- include('../templates/header'); %>
         <div id="main"> 
-            <h1>Welcome back</h1>
-
-            <div id="day-recipe">
+            <div id="random-container">
+                <div id="random-overlay" class="deactive">
+                    <i class="fa-solid fa-spinner fa-xl" aria-hidden="true"></i>
+                </div>
+                <p id="regenerate-recipe" class="button-primary">Click me!</p>
+                Want to discover a new recipe? 
 
             </div>
 
-            <% test.forEach(function(data) { %>
-                <%- include('../templates/recipe', {data, removable: true}); %>
-            <% }); %>
+            <div id="hot-recipes">
+                <h2>Hot recipes</h2>
+                <% hotRecipes.forEach(function(data) { %>
+                    <%- include('../templates/recipe', {data, removable: false}); %>
+                <% }); %>
+    
+            </div>
+
+            <div id="new-recipes">
+                <h2>New recipes</h2>
+                <% newRecipes.forEach(function(data) { %>
+                    <%- include('../templates/recipe', {data, removable: false}); %>
+                <% }); %>
+    
+            </div>
 
 
-            <div></div>
+            <div id="create-recipe">
+                <button class="button-primary">Add your own recipe!</button>
+            </div>
 
         </div>
         <%- include('../templates/footer'); %>

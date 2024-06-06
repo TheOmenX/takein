@@ -23,6 +23,11 @@ body {
     background: var(--background);
 }
 
+#main {
+    flex: 1;
+    overflow: scroll;
+}
+
 .error-message{
     position: absolute;
     width: 60%;
@@ -63,12 +68,16 @@ body {
     color: var(--gray)
 }
 
-#footer > a {
+.header-logo{
+    height: 45px;
+}
+
+#footer > a, #header > a {
     color: var(--primary-gray);
     text-decoration: none;
 }
 
-#footer > a > div {
+#footer > a > div, #header > a >div {
     border-radius: 50%;
     padding: 7px;
     min-width: 25px;
@@ -78,7 +87,7 @@ body {
     justify-content: center;
 }
 
-#footer > a >div:hover {
+#footer > a >div:hover, #header > a >div:hover{
     color: var(--background);
 }
 
@@ -96,10 +105,6 @@ body {
     border-radius: 25px;
 }
 
-
-#main {
-    flex: 1;
-}
 
 .button-primary {
     background-color: var(--secondary);
@@ -121,8 +126,8 @@ body {
 }
 
 .recipe-photo {
-    width: 25vw;
-    height: 25vw;
+    width: 20vw;
+    height: 20vw;
     object-fit: cover;
     border: 3px solid var(--secondary);
     border-radius: 10px;
@@ -140,7 +145,7 @@ body {
 }
 
 .recipe-data > p:first-child {
-    font-size:medium;
+    font-size: 0.8em;
 }
 
 .recipe-data > p:last-child {

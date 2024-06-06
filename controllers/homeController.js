@@ -1,10 +1,27 @@
 const Recipe = require("../models/recipe");
-const Review = require("../models/review")
-const fs = require("fs")
+const Review = require("../models/review");
 
 const homePage = async (req, res) => {  
-    var data = await Recipe.find({});
-    res.render('./home/home', {nav: "home", test: data})
+    let hotRecipes = [];
+
+    let filterDate = new Date()
+    filterDate.setDate(filterDate.getDate() - 14);
+    let ratings = await Review.aggregate([
+        { $match: { createdAt: {$gte: filterDate}}},
+        { $group: { _id: '$recipeID', rating: {$avg: "$rating"}, count: {$count: {}}} }
+    ]).exec()
+
+    ratings.sort((a,b) => b.count - a.count)
+    ratings.sort((a,b) => b.rating - a.rating)
+    for(rating of ratings.slice(0,2)){
+        let recipe = await Recipe.findById(rating)
+        recipe["rating"] = rating.rating
+        recipe["no_ratings"] = rating.count
+        hotRecipes.push(recipe)
+    }
+    let newRecipes = await Recipe.find({}, {}, {sort: {createdAt: -1}}).limit(2)
+
+    res.render('./home/home', {nav: "home", hotRecipes, newRecipes})
 }
 
 const cartPage = (req, res) => {
@@ -12,10 +29,12 @@ const cartPage = (req, res) => {
 }
 
 const searchPage = async (req, res) => {
+
     rating = await Review.aggregate(
-        [{ $group: { _id: '$_id', rating: {$avg: "$rating"} } }]
+        [
+            { $group: { _id: '$recipeID', rating: {$avg: "$rating"}} }
+        ]
     ).exec()
-    console.log(rating)
 
     res.render('./home/search', {nav: "search"})
 }

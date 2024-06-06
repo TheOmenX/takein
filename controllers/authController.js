@@ -35,16 +35,20 @@ const registerPage = (req, res) => {
 // @route   POST /register
 // @acces   Public
 const register = async (req, res) => {
+    console.log(req.body)
     User.create({
       email: req.body.email,
       username: req.body.username,
       password: await bcrypt.hash(req.body.password, 10),
       firstName: req.body.firstName,
-      lastName: req.body.lastName
+      lastName: req.body.lastName,
+      address: req.body.address,
+      description: "Hello, I am new to TakeIn!",
     }).then(user => {
         console.log("Succesfull");
         res.redirect("/login")
     }).catch(err => {
+        console.log(err)
         req.flash('error', 'An user with that email already exits.')
         res.redirect("/register")
     })
