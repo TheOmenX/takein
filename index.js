@@ -17,6 +17,7 @@ app.use('/', require('./routes/homeRoutes'))
 app.use('/profile', require('./routes/profileRoutes'))
 app.use('/recipe', require('./routes/recipeRoutes'))
 app.use('/', require('./routes/friendsRoutes'))
+app.use("/leftover", require("./routes/leftoverRoutes"))
 //#endregion
 
 

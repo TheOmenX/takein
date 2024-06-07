@@ -9,7 +9,7 @@ ROUTE FOR PAGES (/):
 const express = require('express')
 const router = express.Router()
 const { checkAuthenticated } = require('../middleware/authMiddleware')
-const { homePage, cartPage, searchPage, findPage, addCart, delCart } = require('../controllers/homeController')
+const { homePage, cartPage, searchPage, addCart, delCart } = require('../controllers/homeController')
 
 router.get('/', homePage)
 
@@ -19,7 +19,6 @@ router.delete('/cart', checkAuthenticated, delCart)
 
 router.get('/search', searchPage)
 
-router.get('/find', findPage)
 
 
 module.exports = router

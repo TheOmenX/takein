@@ -125,8 +125,8 @@ const submit = async (req, res) => {
     }
 
     if(req.body.id == "new"){
-        let result = await Recipe.create(data)
         data.owner = req.session.passport.user._id;
+        let result = await Recipe.create(data)
         res.status(200).redirect(`/recipe?id=${result._id}`)
     }else if( mongoose.Types.ObjectId.isValid(req.body.id)){
         await Recipe.findByIdAndUpdate(req.body.id, data);

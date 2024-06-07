@@ -79,3 +79,7 @@
 #overlay-container > h3 {
     text-align: center;
 }
+
+.filters {
+    text-align: right;
+}
