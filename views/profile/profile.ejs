@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="/css/global.css">
     <script src="https://kit.fontawesome.com/8f5ac29544.js" crossorigin="anonymous"></script>
     <script src="../scripts/header.js" defer></script>
+    <script src="/scripts/global.js" defer></script>
     <script src="/scripts/profile.js" defer></script>
 </head>
 <body>
@@ -41,9 +42,17 @@
                     
                 </div>
 
-                <button id="friendslist" class="button-primary">Friends List</button>
+                <button id="friendslist" class="button-primary">Following</button>
                 <% if(isOwner) {%>
                     <button id="settings" class="button-primary">Edit</button>
+                <% } else if(followMethod != ""){ %>
+                    <button id="follow" class="button-primary" data-method="<%-followMethod%>">
+                        <% if (followMethod=="POST") { %>
+                            Follow
+                         <% } else { %>
+                            Unfollow
+                        <% } %>
+                    </button>
                 <%}%>
             </div>
             
@@ -56,6 +65,9 @@
                     <% leftovers.forEach(function(data) { %>
                         <%- include('../templates/leftover', {data}); %>
                     <% }); %>
+                <%}%>
+                <% if(isOwner) {%>
+                    <button id="leftover" class="button-primary">Add a leftover</button>
                 <%}%>
             </div>
 
@@ -81,7 +93,19 @@
             <div class="container">
                 <h1 class="overlay-title">Friends</h1>
                 <div class="friends-container">
-
+                    <% followers.forEach(function(data) { %>
+                        <div class="leftover-container" onclick="javascript:window.location = '/profile?id=<%- data.id %>' " id="<%- data.id %>" >
+                            <img class="leftover-photo" src=<% if (data.image) {%> 
+                                    "data:image/jpeg;base64,<%- data.image.toString("base64") -%>"
+                                <%} else {%>
+                                    "images/placeholder.png"
+                                <% } %>
+                                alt="">
+                            <div class="leftover-data">
+                                <p><b><%- data.firstName + " " + data.lastName -%></b></p>
+                            </div>
+                        </div>
+                    <% }); %>
                 </div>
             </div>
         </div>

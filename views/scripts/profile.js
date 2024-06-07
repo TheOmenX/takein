@@ -44,6 +44,34 @@ overlayFriends.addEventListener("click", (el) => {
 })
 
 
-document.getElementById("settings").addEventListener("click", ()=>{
-    window .location = "./profile/settings"
+document.getElementById("settings")?.addEventListener("click", ()=>{
+    window.location = "./profile/settings"
+})
+
+document.getElementById("leftover")?.addEventListener("click", ()=>{
+    window.location = "./leftover/submit?id=new"
+})
+
+document.getElementById("follow")?.addEventListener("click", async (e)=>{
+    let method = e.target.dataset.method;
+    let el = e.target
+
+    let response = await fetch("/profile/follow", {
+        method: method,
+        headers: {"Content-Type": "application/json",},
+        body: JSON.stringify({friendId: window.location.search.substr(1).split("=")[1]})
+    })
+    if(response.ok){
+        if(method == "POST") {
+            displayError("Added to followers", "#A9C1A0", "");
+            el.dataset.method = "DELETE"; el.innerHTML = "Unfollow"
+        }
+        else {
+            el.dataset.method = "POST"; el.innerHTML = "Follow"
+            displayError("Removed from followers", "#A9C1A0", "");
+        }
+        
+    }else{
+        displayError(response.statusText);
+    }
 })

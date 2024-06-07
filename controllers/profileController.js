@@ -10,13 +10,26 @@ const profilePage = async (req, res) => {
             let isOwner = (req.query.id == req.session?.passport?.user?._id || !req.query.id)
             let user = await User.findById(id)
 
+            let followMethod = ""
+            let followers = []
+            if(!isOwner){
+                let active = await User.findById(req.session.passport.user._id)
+                if( active.friends.includes(id) ) followMethod = "DELETE"
+                else followMethod = "POST"
+            }else {
+                for(friendId of user.friends){
+                    let friend = await User.findById(friendId).select("firstName lastName image") 
+                    followers.push(friend)
+                }
+            }
+
             let favouriteRecipes = [];
             for(recipe of user.favouriteRecipes){
                 let data =await Recipe.findById(recipe)
                 if (data) favouriteRecipes.push(data)
             }
             let leftovers = [];
-            res.render('./profile/profile', {user, isOwner, favouriteRecipes, leftovers})
+            res.render('./profile/profile', {user, isOwner, favouriteRecipes, leftovers, followMethod, followers})
         } catch (error) {
             res.status(401).send("An error occured.")
             console.log(error)
@@ -98,8 +111,26 @@ const checkUser = async (req,res) => {
 }
 
 const addFollow = async (req,res) =>{
-
+    let userId = req.session.passport.user._id
+    let friendId = req.body.friendId
+    let user = await User.findById(userId).select("friends")
+    console.log(user)
+    if(!user.friends) user.friends = []
+    if(!user.friends.includes(friendId)) {user.friends.push(friendId)}
+    console.log(user)
+    let response = await User.findByIdAndUpdate(userId, user)
+    res.status(200).send();
 }
 
+const delFollow = async (req, res) =>{
+    let userId = req.session.passport.user._id
+    let friendId = req.body.friendId
+    let user = (await User.findById(userId).select("friends")).toObject()
 
-module.exports = { profilePage, addFavourites, delFavourites, settingsPage, settings, checkUser }
+    user.friends.splice(user.friends.indexOf(friendId) ,1)
+
+    let response = await User.findByIdAndUpdate(userId, user)
+    res.status(200).send();
+}
+
+module.exports = { profilePage, addFavourites, delFavourites, settingsPage, settings, checkUser, addFollow, delFollow }

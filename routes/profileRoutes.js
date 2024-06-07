@@ -8,7 +8,7 @@ ROUTE FOR PAGES(/profile/):
 const express = require('express')
 const router = express.Router()
 const { checkAuthenticated } = require('../middleware/authMiddleware')
-const { profilePage, addFavourites, delFavourites, settingsPage, settings, checkUser } = require('../controllers/profileController')
+const { profilePage, addFavourites, delFavourites, settingsPage, settings, checkUser, addFollow, delFollow } = require('../controllers/profileController')
 
 router.get('/', profilePage)
 
@@ -19,6 +19,9 @@ router.get('/settings', checkAuthenticated, settingsPage)
 router.post('/settings', checkAuthenticated, settings)
 
 router.post("/user", checkAuthenticated, checkUser)
+
+router.post("/follow", checkAuthenticated, addFollow)
+router.delete("/follow", checkAuthenticated, delFollow)
 
 
 module.exports = router
