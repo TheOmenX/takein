@@ -3,8 +3,9 @@ const mongoose = require("mongoose");
 const Message = require("../models/message");
 
 const findPage = async (req, res) => {
+    let data = await Leftover.find();
 
-    res.render('./leftover/find')
+    res.render('./leftover/find', {data})
 }
 
 const leftoverPage = async (req, res) => {
@@ -58,13 +59,10 @@ const pickup = async (req,res) => {
         res.statusText = "Cannot pickup own leftover"
         res.status(400).send()
     }else{
-        console.log(leftoverID)
         await Message.create({sender: id, reciever: owner, message: "Hey, I would like to pickup your leftover. Can we arrange a time?"})
         await Leftover.findByIdAndDelete(leftoverID)
         res.status(200).send()
     }
-
-    
 }
 
 module.exports = { leftoverPage, createLeftover, createLeftoverPage, findPage, pickup }

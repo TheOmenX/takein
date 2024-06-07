@@ -119,13 +119,13 @@ body {
 
 }
 
-.recipe-container {
+.recipe-container, .leftover-container {
     margin: 4px 10px;
     display: flex;
     align-items: center;
 }
 
-.recipe-photo {
+.recipe-photo, .leftover-photo {
     width: 20vw;
     height: 20vw;
     object-fit: cover;
@@ -134,21 +134,21 @@ body {
     margin-right: 5px;
 }
 
-.recipe-data {
+.recipe-data, .leftover-data {
     margin: 2px;
     flex: 1;
 }
 
-.recipe-data > p {
+.recipe-data > p, .leftover-data > p {
     margin: 0;
     font-size: x-small;
 }
 
-.recipe-data > p:first-child {
+.recipe-data > p:first-child, .leftover-data > p:first-child {
     font-size: 0.8em;
 }
 
-.recipe-data > p:last-child {
+.recipe-data > p:last-child, .leftover-data > p:last-child {
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;

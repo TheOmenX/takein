@@ -34,7 +34,6 @@ const chatsPage = async (req, res) => {
 
     let data = []
     for(id in hashMessages){
-        console.log(id)
         let user = await User.findById(id).select("firstName lastName picture").catch((err) => console.log(err))
         delete user._id;
         data.push({...hashMessages[id], ...user.toObject()})
@@ -49,7 +48,6 @@ const chatPage =  async (req, res) => {
     let id = req.query.id
     let sender = req.session.passport.user._id;
     let reciever = await User.findById(id).select("firstName lastName picture");
-    console.log({id, reciever})
     if(!id || !reciever || req.session.passport.user._id == reciever._id) res.redirect("/chats")
 
     let messages = await Message.find( {
@@ -64,10 +62,6 @@ const chatPage =  async (req, res) => {
             ]}
         ]
     })
-
-    console.log(messages)
-
-
 
     res.render('./friends/chat', {reciever, messages})
 }

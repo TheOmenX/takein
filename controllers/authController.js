@@ -6,7 +6,6 @@ const bcrypt = require("bcrypt")
 // @route   GET /login
 // @acces   Public
 const loginPage = (req, res) => {
-    console.log(req.params);
     res.render('./auth/login')
 }
 
@@ -35,7 +34,6 @@ const registerPage = (req, res) => {
 // @route   POST /register
 // @acces   Public
 const register = async (req, res) => {
-    console.log(req.body)
     User.create({
       email: req.body.email,
       username: req.body.username,

@@ -1,5 +1,4 @@
 for (let item of document.getElementsByClassName("recipe-container")){
-    console.log("test")
     item.addEventListener("click", async (e) => {
         if(e.target.tagName != "I"){
             window.location = `/recipe?id=${item.id}`

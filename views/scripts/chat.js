@@ -24,7 +24,6 @@ async function sendMessage() {
         },
         body: JSON.stringify({reciever: recieverID, message})
     })
-    console.log("fuck")
     if(response.ok){
         chatBar.value = "";
         renderMessage(message)

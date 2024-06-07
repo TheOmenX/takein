@@ -33,7 +33,6 @@ const cartPage = async (req, res) => {
         recipe.no_people = cart[id]
         data.push(recipe)
     }
-    console.log(data)
     res.render('./home/cart', {data})
 }
 
@@ -70,10 +69,6 @@ const searchPage = async (req, res) => {
     res.render('./home/search', {nav: "search"})
 }
 
-const findPage = (req, res) => {
-    res.render('./home/find', {nav: "location"})
-}
 
 
-
-module.exports = { homePage, cartPage, searchPage, findPage, addCart, delCart }
+module.exports = { homePage, cartPage, searchPage, addCart, delCart }

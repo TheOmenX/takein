@@ -96,5 +96,10 @@ const checkUser = async (req,res) => {
     }
 
 }
-    
+
+const addFollow = async (req,res) =>{
+
+}
+
+
 module.exports = { profilePage, addFavourites, delFavourites, settingsPage, settings, checkUser }

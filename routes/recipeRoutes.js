@@ -18,10 +18,7 @@ router.post('/recipe', recipe)
 
 router.post('/recipes', getRecipes)
 
-router.get('/review', reviewPage)
 router.post('/review', review)
-
-router.get('/reviews', reviewsPage)
 
 router.get('/submit', checkAuthenticated, submitPage)
 router.post('/submit', checkAuthenticated, submit)

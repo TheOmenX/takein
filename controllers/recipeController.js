@@ -2,25 +2,22 @@ const Recipe = require("../models/recipe");
 const Review = require("../models/review");
 const mongoose = require("mongoose");
 
-
 const recipe = async (req, res) => {
     const ids = req.body.ids 
-    
     let recipes = []
     if(ids.length > 0){
     for(id of ids){
             recipes.push(await Recipe.findById(id))
         }
     }
-
     res.send(recipes)
-
 }
 
 const recipePage = async (req, res) => {
     let id = req.query.id
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(400).send("Invalid id");
     let data = await Recipe.findById(id)
-    if(!id || !data) res.redirect("/");
+    if(!data) return res.redirect("/");
 
     let user = req.session?.passport?.user
     let userReview;
@@ -28,7 +25,6 @@ const recipePage = async (req, res) => {
     let favourite = 0;
     let canAdd = (user) ? true : false;
     if(user) {
-        console.log(req.session.passport.user.cart)
         if(id in req.session.passport.user.cart) canAdd = false;
         let userID = user._id
         userReview = await Review.findOne({userID, recipeID: id})
@@ -36,7 +32,6 @@ const recipePage = async (req, res) => {
             canEdit = true;
         }
         favourite = 1;
-        console.log(user.favouriteRecipes.includes(id))
         if(user.favouriteRecipes.includes(id)) favourite = 2;
     }
 
@@ -51,11 +46,6 @@ const recipePage = async (req, res) => {
     res.render('./recipe/recipe', {data, userReview, canEdit, favourite, canAdd})
 }
 
-const reviewPage = (req, res) => {
-
-    res.render('./recipe/review')
-}
-
 const review = (req, res) => {
     let data = req.body;
     let recipeID = req.body.recipeID
@@ -66,11 +56,9 @@ const review = (req, res) => {
         }
         data["userID"] = req.session.passport.user
         let query = {recipeID: recipeID, userID: data.userID}
-        console.log(query)
 
         Review.findOneAndReplace({recipeID: recipeID, userID: data.userID}, data, {upsert:true})
             .then(() => {
-                console.log("succes")
                 res.status(200).send("Succes")
             }).catch((err) =>{
                 console.log(err)
@@ -82,17 +70,13 @@ const review = (req, res) => {
     }
 }
 
-const reviewsPage = (req, res) => {
-    res.render('./recipe/reviews')
-}
-
 const submitPage = async (req, res) => {
     let id = req.query.id
     if(id == "new"){
         res.render('./recipe/submit', {data: {id: "new", title: "Your new recipe", ingredients: [], steps: []}})
     }else if(mongoose.Types.ObjectId.isValid(id)){
         let data = await Recipe.findById(id).catch((err) => console.log(err))
-        if(!data) res.redirect("/");
+        if(!data) return res.redirect("/");
         res.render('./recipe/submit', {data})
     }else {
         res.redirect("/");
@@ -193,16 +177,10 @@ const getRecipes = async (req, res) => {
             "$unset": "ratings"
         }
     ])
-    
-    
-    //await Recipe.find({title: { $regex: regex, $options: "i" }})        .limit(7)
-
-    data.forEach(x => {console.log(x.ratings); console.log(x.avgRating)})
-    console.log(data)
 
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(data));
 
 }
 
-module.exports = { recipe, recipePage, reviewPage, review, reviewsPage, submitPage, submit, randomRecipe, getRecipes }
+module.exports = { recipe, recipePage, review, submitPage, submit, randomRecipe, getRecipes }
