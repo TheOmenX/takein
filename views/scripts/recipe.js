@@ -85,3 +85,29 @@ document.getElementById("star-recipe").addEventListener("click",async  (el) => {
         displayError("An error occured")
     }
 })
+
+let people= document.getElementById("no_people")
+document.getElementById("add-people").addEventListener("click", () => changePeople(1))
+document.getElementById("minus-people").addEventListener("click", () => changePeople(-1))
+
+function changePeople(n){
+    if(people.innerHTML - -n > 0) people.innerHTML =  (people.innerHTML - -n);
+}
+
+document.getElementById("add-cart")?.addEventListener("click", async (el) => {
+    let value = --(people.innerHTML)
+
+    let response = await fetch("/cart", {
+        method: "POST",
+        headers:{
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({recipeID, people: value})
+    })
+
+    if(response.ok){
+        el.target.remove()
+    }else {
+        displayError(response.statusText);
+    }
+})

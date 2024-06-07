@@ -91,18 +91,29 @@ li > a {
 }
 
 
-#star-recipe {
+
+
+.actions {
     position: absolute;
-    top: 80px;
-    right: 20px;
+    top: 60px;
+    right: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
 }
 
-#star-recipe::before {
+.actions > i {
+    margin: 18px 0px;
+}
+
+#star-recipe::before, #add-cart::before {
     background: var(--background);
     padding: 5px;
     border: 1px solid var(--primary);
     border-radius: 200px;
 }
+
 
 #star-recipe.fa-star.checked {
     color: orange;
@@ -119,4 +130,38 @@ li > a {
     100% {
       transform: rotate(359deg);
     }
+}
+
+.title-container {
+    display: grid;
+    grid-template-columns: 80% 20%;
+}
+
+#people-container {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+#no_people {
+    width: 1.2em;
+}
+
+.adders {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    width: 5px; 
+}
+
+.adders > i {
+    border: 1px solid var(--secondary);
+    background-color: var(--primary);
+    color: var(--background);
+    border-radius: 100%;
+    width: 12.5px;
+    height: 12.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

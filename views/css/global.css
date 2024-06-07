@@ -155,3 +155,9 @@ body {
     line-clamp: 2;
     -webkit-box-orient: vertical;
 }
+
+.no_people {
+    padding: 8px;
+    border: 1px solid var(--light-gray);
+    border-radius: 15px;
+}

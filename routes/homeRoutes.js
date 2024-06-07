@@ -8,12 +8,14 @@ ROUTE FOR PAGES (/):
 
 const express = require('express')
 const router = express.Router()
-//const {  } = require('../middleware/authMiddleware')
-const { homePage, cartPage, searchPage, findPage } = require('../controllers/homeController')
+const { checkAuthenticated } = require('../middleware/authMiddleware')
+const { homePage, cartPage, searchPage, findPage, addCart, delCart } = require('../controllers/homeController')
 
 router.get('/', homePage)
 
-router.get('/cart', cartPage)
+router.get('/cart', checkAuthenticated, cartPage)
+router.post('/cart', checkAuthenticated, addCart)
+router.delete('/cart', checkAuthenticated, delCart)
 
 router.get('/search', searchPage)
 

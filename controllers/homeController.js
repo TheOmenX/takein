@@ -24,8 +24,39 @@ const homePage = async (req, res) => {
     res.render('./home/home', {nav: "home", hotRecipes, newRecipes})
 }
 
-const cartPage = (req, res) => {
-    res.render('./home/cart', {nav: ""})
+const cartPage = async (req, res) => {
+    let data =[];
+    let cart = req.session.passport.user.cart
+    for(id in cart){
+        let response  = await Recipe.findById(id)
+        let recipe = response.toObject()
+        recipe.no_people = cart[id]
+        data.push(recipe)
+    }
+    console.log(data)
+    res.render('./home/cart', {data})
+}
+
+const addCart = (req, res) =>{
+    let data = req.body
+    let cart = req.session.passport.user.cart
+    if(data.recipeID in cart){
+        cart[data.recipeID] += data.people
+    }else {
+        cart[data.recipeID] = data.people
+    }
+    req.session.save()
+    res.status(200).send()
+}
+
+const delCart  = (req, res) =>{
+    let data = req.body
+    let cart = req.session.passport.user.cart
+    if(data.recipeID in cart){
+        delete cart[data.recipeID]
+    }
+    req.session.save()
+    res.status(200).send()
 }
 
 const searchPage = async (req, res) => {
@@ -45,4 +76,4 @@ const findPage = (req, res) => {
 
 
 
-module.exports = { homePage, cartPage, searchPage, findPage }
+module.exports = { homePage, cartPage, searchPage, findPage, addCart, delCart }

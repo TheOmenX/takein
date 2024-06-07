@@ -70,6 +70,6 @@ document.getElementById("photo-upload").addEventListener("change", (e) => {
 })
 
 
-document.getElementById("title-edit").addEventListener('keydown', (event) => {
+document.getElementById("title-edit").addEventListener('keyup', (event) => {
     document.getElementById("title").value = event.target.innerHTML;
 })

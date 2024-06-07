@@ -14,11 +14,18 @@
     <div id="content">
         <%- include('../templates/header'); %>
         <div id="main">
-            <% if (favourite > 1) { %>
-                <i class="fa-solid fa-star fa-xl checked" id="star-recipe"></i>  
-            <% } else if (favourite > 0) { %>
-                <i class="fa-solid fa-star fa-xl" id="star-recipe"></i>  
-            <% } %>
+            <div class="actions">
+                <% if (favourite > 1) { %>
+                    <i class="fa-solid fa-star fa-xl checked" id="star-recipe"></i>
+                <% } else if (favourite > 0) { %>
+                    <i class="fa-solid fa-star fa-xl" id="star-recipe"></i>
+                <% } %>
+
+                <% if (canAdd) { %>
+                    <i class="fa-solid fa-cart-plus fa-xl" id="add-cart">
+                    </i>  
+                <% } %>
+            </div>
 
             <img class="photo" id="photo" src=<% if (data.image) {%> 
                 "data:image/jpeg;base64,<%- data.image.toString("base64") -%>"
@@ -27,7 +34,17 @@
             <% } %>
                 alt="">
             
-            <h1 class="recipeTitle"> <%-data.title %></h1>
+            <div class="title-container">
+                <h1 class="recipeTitle"> <%-data.title %></h1>
+                <div id="people-container">
+                    <i class="fa-solid fa-user fa-lg" ></i>
+                    <p id="no_people">4</p>
+                    <div class="adders"> 
+                        <i class="fa-solid fa-plus fa-2xs" id="add-people"></i>
+                        <i class="fa-solid fa-minus fa-2xs" id="minus-people"></i>
+                    </div>
+                </div>
+            </div>
             <div class="ratings">
                 <p> 
                     <% for(var i=0; i<5; i++) {%>

@@ -26,7 +26,10 @@ const recipePage = async (req, res) => {
     let userReview;
     let canEdit = false;
     let favourite = 0;
+    let canAdd = (user) ? true : false;
     if(user) {
+        console.log(req.session.passport.user.cart)
+        if(id in req.session.passport.user.cart) canAdd = false;
         let userID = user._id
         userReview = await Review.findOne({userID, recipeID: id})
         if(data.owner == user._id || user.permissions.includes("ADMIN")){
@@ -45,7 +48,7 @@ const recipePage = async (req, res) => {
         { $match: {recipeID}},
         { $group: {_id:"$recipeID", average: {$avg: '$rating'}}}
     ]))[0]?.average
-    res.render('./recipe/recipe', {data, userReview, canEdit, favourite})
+    res.render('./recipe/recipe', {data, userReview, canEdit, favourite, canAdd})
 }
 
 const reviewPage = (req, res) => {

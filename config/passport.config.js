@@ -15,7 +15,8 @@ async function initialize(passport){
         let newUser = {
             _id: user.id,
             permissions: user.permissions,
-            favouriteRecipes: user.favouriteRecipes
+            favouriteRecipes: user.favouriteRecipes,
+            cart: {}
         }
         done(null, newUser)
 })
